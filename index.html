@@ -1764,10 +1764,40 @@ async function member(){
  return {name:p?.full_name||u.user_metadata?.full_name||"Member",email:u.email||p?.email||""};
 }
 async function showDashboard(){
- const m=await member(); if(!m){setAuthMode("login");openModal();showAuthMessage("Silakan login terlebih dahulu.");return}
+ const {data:{session}}=await nxra.auth.getSession();
+ if(!session?.user){setAuthMode("login");openModal();showAuthMessage("Silakan login terlebih dahulu.");return}
+ const m=await member();
+ const uid=session.user.id;
+
+ // Ambil saldo milik user. RLS memastikan user hanya dapat membaca wallet sendiri.
+ const {data:wallet,error:walletError}=await nxra.from("wallets").select("balance").eq("user_id",uid).maybeSingle();
+ if(walletError) console.error("Wallet:",walletError);
+
+ // Ambil transaksi milik user. RLS memastikan user hanya dapat membaca transaksi sendiri.
+ const {data:tx,error:txError}=await nxra.from("transactions")
+   .select("id,type,amount,status,created_at")
+   .eq("user_id",uid)
+   .order("created_at",{ascending:false})
+   .limit(20);
+ if(txError) console.error("Transactions:",txError);
+
+ const rows=tx||[];
+ const approvedDeposits=rows.filter(x=>x.type==="deposit"&&x.status==="approved").reduce((a,x)=>a+Number(x.amount||0),0);
+ const approvedWithdrawals=rows.filter(x=>x.type==="withdrawal"&&x.status==="approved").reduce((a,x)=>a+Number(x.amount||0),0);
+ const balance=Number(wallet?.balance||0);
+
+ const statusLabel=s=>s==="approved"?"Disetujui":s==="rejected"?"Ditolak":"Menunggu";
+ const txHtml=rows.length?rows.map(x=>`<div style="display:grid;grid-template-columns:1.1fr 1fr .9fr;gap:10px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px"><div><b>${x.type==="deposit"?"Deposit":"Penarikan"}</b><br><span style="color:#8297b5">${new Date(x.created_at).toLocaleString("id-ID")}</span></div><div style="font-weight:800">${rupiah(Number(x.amount||0))}</div><div style="text-align:right">${statusLabel(x.status)}</div></div>`).join(""):`<p style="color:#8fa5c5">Belum ada transaksi.</p>`;
+
  closeModal();let p=document.getElementById("memberPanel");
  if(!p){p=document.createElement("div");p.id="memberPanel";p.style.cssText="position:fixed;inset:0;z-index:1200;background:#030814;color:#f4f8ff;overflow:auto;padding:28px 5%";document.body.appendChild(p)}
- p.innerHTML=`<div style="max-width:900px;margin:auto"><div style="display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:35px"><div><div style="color:#55caff;font-size:12px;font-weight:800">NEXORA MEMBER</div><h2 style="margin-top:6px">Halo, ${escapeHtml(m.name)}</h2></div><button class="btn btn-outline" onclick="logoutNXRA()">Keluar</button></div><div class="calc" style="margin-bottom:18px"><h3>Dashboard Akun</h3><p style="color:#8fa5c5;line-height:1.7">Email: ${escapeHtml(m.email)}<br>Status autentikasi: <b style="color:#2cff9a">AKTIF</b></p></div><div class="results"><div class="result"><span>Saldo</span><strong>Rp0</strong></div><div class="result"><span>Paket Aktif</span><strong>Belum Ada</strong></div><div class="result"><span>Deposit</span><strong>Rp0</strong></div><div class="result"><span>Penarikan</span><strong>Rp0</strong></div></div><div class="notice" style="max-width:none;margin-top:18px">Akun menggunakan Supabase Auth dan profil dilindungi Row Level Security (RLS).</div><button class="btn btn-primary" style="margin-top:20px" onclick="document.getElementById('memberPanel').remove()">Kembali ke Website</button></div>`;
+ p.innerHTML=`<div style="max-width:900px;margin:auto">
+ <div style="display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:35px"><div><div style="color:#55caff;font-size:12px;font-weight:800">NEXORA MEMBER</div><h2 style="margin-top:6px">Halo, ${escapeHtml(m.name)}</h2></div><button class="btn btn-outline" onclick="logoutNXRA()">Keluar</button></div>
+ <div class="calc" style="margin-bottom:18px"><h3>Dashboard Akun</h3><p style="color:#8fa5c5;line-height:1.7">Email: ${escapeHtml(m.email)}<br>Status autentikasi: <b style="color:#2cff9a">AKTIF</b></p></div>
+ <div class="results"><div class="result"><span>Saldo</span><strong>${rupiah(balance)}</strong></div><div class="result"><span>Status Wallet</span><strong>${wallet?"Aktif":"Belum tersedia"}</strong></div><div class="result"><span>Deposit Disetujui*</span><strong>${rupiah(approvedDeposits)}</strong></div><div class="result"><span>Penarikan Disetujui*</span><strong>${rupiah(approvedWithdrawals)}</strong></div></div>
+ <div class="calc" style="margin-top:18px"><h3>Riwayat Transaksi Terbaru</h3>${txHtml}<div class="notice" style="max-width:none;margin-top:16px">*Ringkasan deposit/penarikan dihitung dari maksimal 20 transaksi terbaru yang ditampilkan. Saldo utama dibaca langsung dari tabel wallet.</div></div>
+ <div class="notice" style="max-width:none;margin-top:18px">Dashboard hanya memiliki akses baca ke saldo dan transaksi milik akun yang sedang login. Perubahan saldo harus dilakukan melalui proses backend/admin yang terotorisasi.</div>
+ <button class="btn btn-primary" style="margin-top:20px" onclick="document.getElementById('memberPanel').remove()">Kembali ke Website</button></div>`;
 }
 function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 async function logoutNXRA(){const {error}=await nxra.auth.signOut();if(error){alert("Logout gagal: "+error.message);return}document.getElementById("memberPanel")?.remove();setAuthMode("login")}
