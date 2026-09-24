@@ -1555,30 +1555,30 @@ footer{
 
     <h3>Daftar NEXORA</h3>
 
-    <p>
-        Form demo registrasi anggota.
-    </p>
+    <p id="authSubtitle">Buat akun untuk masuk ke dashboard NEXORA.</p>
 
-    <div class="field">
+    <div class="field" id="nameField">
         <label>Nama Lengkap</label>
-        <input class="input" id="name" placeholder="Nama lengkap">
+        <input class="input" id="name" autocomplete="name" placeholder="Nama lengkap">
     </div>
 
     <div class="field">
         <label>Email</label>
-        <input class="input" id="email" type="email" placeholder="email@example.com">
+        <input class="input" id="email" type="email" autocomplete="email" placeholder="email@example.com">
     </div>
 
     <div class="field">
         <label>Password</label>
-        <input class="input" id="password" type="password" placeholder="••••••••">
+        <input class="input" id="password" type="password" autocomplete="current-password" minlength="6" placeholder="Minimal 6 karakter">
     </div>
 
-    <button
-        class="btn btn-primary"
-        style="width:100%"
-        onclick="registerDemo()">
+    <div id="authMessage" style="display:none;margin:-4px 0 16px;padding:12px;border-radius:10px;font-size:12px;line-height:1.5"></div>
+
+    <button class="btn btn-primary" style="width:100%" id="authButton" onclick="submitAuth()">
         Buat Akun
+    </button>
+    <button class="btn btn-outline" style="width:100%;margin-top:10px" id="authSwitch" onclick="toggleAuthMode()">
+        Sudah punya akun? Login
     </button>
 
 </div>
@@ -1697,40 +1697,112 @@ window.onclick = function(event){
 
 
 /* ==========================
-   REGISTER DEMO
+   AUTH LOCAL (GITHUB PAGES)
+   Catatan: data disimpan hanya di browser/perangkat ini.
 ========================== */
 
-function registerDemo(){
+let authMode = "register";
 
-    let name =
-        document.getElementById("name").value.trim();
-
-    let email =
-        document.getElementById("email").value.trim();
-
-    let password =
-        document.getElementById("password").value.trim();
-
-    if(!name || !email || !password){
-
-        alert("Silakan lengkapi semua data.");
-
-        return;
-    }
-
-    alert(
-        "Registrasi demo berhasil, " +
-        name +
-        "!\\n\\n" +
-        "Untuk sistem akun sungguhan, website perlu dihubungkan " +
-        "ke backend/database."
-    );
-
-    closeModal();
-
+function getUsers(){
+    try { return JSON.parse(localStorage.getItem("nxra_users")) || []; }
+    catch(e){ return []; }
 }
+
+function saveUsers(users){
+    localStorage.setItem("nxra_users", JSON.stringify(users));
+}
+
+function showAuthMessage(message, ok=false){
+    const box = document.getElementById("authMessage");
+    box.style.display = "block";
+    box.style.background = ok ? "rgba(44,255,154,.10)" : "rgba(255,80,100,.10)";
+    box.style.border = ok ? "1px solid rgba(44,255,154,.28)" : "1px solid rgba(255,80,100,.28)";
+    box.style.color = ok ? "#77ffbd" : "#ff9aaa";
+    box.textContent = message;
+}
+
+function clearAuthMessage(){
+    document.getElementById("authMessage").style.display = "none";
+}
+
+function toggleAuthMode(){
+    authMode = authMode === "register" ? "login" : "register";
+    const registering = authMode === "register";
+    document.getElementById("nameField").style.display = registering ? "block" : "none";
+    document.querySelector("#registerModal h3").textContent = registering ? "Daftar NEXORA" : "Login NEXORA";
+    document.getElementById("authSubtitle").textContent = registering ? "Buat akun untuk masuk ke dashboard NEXORA." : "Masuk menggunakan akun yang sudah dibuat di perangkat ini.";
+    document.getElementById("authButton").textContent = registering ? "Buat Akun" : "Login";
+    document.getElementById("authSwitch").textContent = registering ? "Sudah punya akun? Login" : "Belum punya akun? Daftar";
+    clearAuthMessage();
+}
+
+function submitAuth(){
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    const password = document.getElementById("password").value;
+    if(!email || !password || (authMode === "register" && !name)){
+        showAuthMessage("Silakan lengkapi semua data."); return;
+    }
+    if(!/^\S+@\S+\.\S+$/.test(email)){ showAuthMessage("Format email belum benar."); return; }
+    if(password.length < 6){ showAuthMessage("Password minimal 6 karakter."); return; }
+    const users = getUsers();
+    if(authMode === "register"){
+        if(users.some(u => u.email === email)){ showAuthMessage("Email sudah terdaftar. Silakan login."); return; }
+        users.push({name,email,password,createdAt:new Date().toISOString()});
+        saveUsers(users);
+        localStorage.setItem("nxra_session", JSON.stringify({name,email}));
+        showAuthMessage("Registrasi berhasil. Akun tersimpan di perangkat ini.", true);
+        setTimeout(showDashboard, 450);
+    } else {
+        const user = users.find(u => u.email === email && u.password === password);
+        if(!user){ showAuthMessage("Email atau password salah."); return; }
+        localStorage.setItem("nxra_session", JSON.stringify({name:user.name,email:user.email}));
+        showAuthMessage("Login berhasil.", true);
+        setTimeout(showDashboard, 350);
+    }
+}
+
+function showDashboard(){
+    const session = JSON.parse(localStorage.getItem("nxra_session") || "null");
+    if(!session) return;
+    closeModal();
+    let panel = document.getElementById("memberPanel");
+    if(!panel){
+        panel = document.createElement("div");
+        panel.id = "memberPanel";
+        panel.style.cssText = "position:fixed;inset:0;z-index:1200;background:#030814;color:#f4f8ff;overflow:auto;padding:28px 5%";
+        document.body.appendChild(panel);
+    }
+    panel.innerHTML = `
+      <div style="max-width:900px;margin:auto">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:35px">
+          <div><div style="color:#55caff;font-size:12px;font-weight:800">NEXORA MEMBER</div><h2 style="margin-top:6px">Halo, ${escapeHtml(session.name)}</h2></div>
+          <button class="btn btn-outline" onclick="logoutNXRA()">Keluar</button>
+        </div>
+        <div class="calc" style="margin-bottom:18px"><h3>Dashboard Akun</h3><p style="color:#8fa5c5;line-height:1.7">Email: ${escapeHtml(session.email)}<br>Status akun: <b style="color:#2cff9a">AKTIF</b></p></div>
+        <div class="results">
+          <div class="result"><span>Saldo</span><strong>Rp0</strong></div>
+          <div class="result"><span>Paket Aktif</span><strong>Belum Ada</strong></div>
+          <div class="result"><span>Deposit</span><strong>Rp0</strong></div>
+          <div class="result"><span>Penarikan</span><strong>Rp0</strong></div>
+        </div>
+        <div class="notice" style="max-width:none;margin-top:18px">Versi GitHub Pages ini menyimpan akun hanya di browser/perangkat yang digunakan. Untuk akun lintas perangkat, saldo, deposit, penarikan, dan data finansial sungguhan diperlukan backend/database dengan autentikasi yang aman.</div>
+        <button class="btn btn-primary" style="margin-top:20px" onclick="document.getElementById('memberPanel').remove()">Kembali ke Website</button>
+      </div>`;
+}
+
+function escapeHtml(value){
+    return String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+
+function logoutNXRA(){
+    localStorage.removeItem("nxra_session");
+    document.getElementById("memberPanel")?.remove();
+    authMode = "login"; toggleAuthMode(); toggleAuthMode();
+}
+
 
 </script>
 
 </body>
-</html>
+               </html>
