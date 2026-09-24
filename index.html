@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050b18">
+
+<title>NEXORA NXRA — Next Generation Digital Infrastructure</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================
+   NEXORA / NXRA
+   SINGLE FILE WEBSITE
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --bg:#030814;
+    --bg2:#071224;
+    --card:rgba(10,25,50,.72);
+    --card2:rgba(14,35,67,.8);
+    --blue:#00a8ff;
+    --blue2:#0075ff;
+    --cyan:#00eaff;
+    --gold:#ffc72c;
+    --green:#2cff9a;
+    --text:#f4f8ff;
+    --muted:#8fa5c5;
+    --border:rgba(54,154,255,.22);
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:"Inter",sans-serif;
+    background:
+        radial-gradient(circle at 20% 10%,rgba(0,119,255,.16),transparent 30%),
+        radial-gradient(circle at 80% 40%,rgba(0,234,255,.09),transparent 28%),
+        linear-gradient(180deg,#020711,#050d1d 45%,#020711);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+body:before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.12;
+    background-image:
+        linear-gradient(rgba(0,168,255,.15) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,168,255,.15) 1px,transparent 1px);
+    background-size:45px 45px;
+    mask-image:linear-gradient(to bottom,black,transparent 85%);
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+button,input{
+    font:inherit;
+}
+
+.container{
+    width:min(1180px,92%);
+    margin:auto;
+}
+
+/* NAVBAR */
+
+nav{
+    position:sticky;
+    top:0;
+    z-index:100;
+    backdrop-filter:blur(18px);
+    background:rgba(2,7,17,.78);
+    border-bottom:1px solid rgba(0,168,255,.15);
+}
+
+.navbar{
+    height:74px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:11px;
+}
+
+.logo-icon{
+    width:43px;
+    height:43px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    font-weight:900;
+    color:#fff;
+    background:linear-gradient(135deg,var(--blue),#0050ff);
+    box-shadow:0 0 30px rgba(0,168,255,.35);
+}
+
+.logo strong{
+    font-family:"Space Grotesk";
+    font-size:20px;
+    letter-spacing:1px;
+}
+
+.logo small{
+    display:block;
+    color:var(--muted);
+    font-size:9px;
+    letter-spacing:1.5px;
+}
+
+.menu{
+    display:flex;
+    gap:28px;
+    align-items:center;
+    color:#a9b9d1;
+    font-size:14px;
+    font-weight:600;
+}
+
+.menu a:hover{
+    color:#fff;
+}
+
+.btn{
+    border:none;
+    cursor:pointer;
+    padding:13px 22px;
+    border-radius:12px;
+    font-weight:800;
+    transition:.25s;
+}
+
+.btn-primary{
+    color:white;
+    background:linear-gradient(135deg,#007bff,#00b7ff);
+    box-shadow:0 10px 30px rgba(0,133,255,.25);
+}
+
+.btn-primary:hover{
+    transform:translateY(-2px);
+    box-shadow:0 14px 40px rgba(0,133,255,.4);
+}
+
+.btn-outline{
+    color:#dceaff;
+    background:rgba(255,255,255,.04);
+    border:1px solid var(--border);
+}
+
+.btn-gold{
+    color:#181000;
+    background:linear-gradient(135deg,#ffb800,#ffe276);
+    box-shadow:0 10px 35px rgba(255,199,44,.2);
+}
+
+/* HERO */
+
+.hero{
+    min-height:690px;
+    display:flex;
+    align-items:center;
+    position:relative;
+}
+
+.hero-grid{
+    display:grid;
+    grid-template-columns:1.05fr .95fr;
+    gap:50px;
+    align-items:center;
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border:1px solid rgba(0,168,255,.3);
+    background:rgba(0,168,255,.08);
+    color:#64caff;
+    padding:8px 13px;
+    border-radius:50px;
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:1px;
+    margin-bottom:20px;
+}
+
+.dot{
+    width:7px;
+    height:7px;
+    background:#00eaff;
+    border-radius:50%;
+    box-shadow:0 0 10px #00eaff;
+}
+
+.hero h1{
+    font-family:"Space Grotesk";
+    font-size:clamp(43px,6vw,78px);
+    line-height:.98;
+    letter-spacing:-3px;
+    margin-bottom:22px;
+}
+
+.gradient{
+    background:linear-gradient(90deg,#ffffff,#67caff,#008cff);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.hero p{
+    color:var(--muted);
+    max-width:620px;
+    line-height:1.8;
+    font-size:16px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:12px;
+    margin-top:30px;
+    flex-wrap:wrap;
+}
+
+.hero-stats{
+    display:flex;
+    gap:30px;
+    margin-top:38px;
+}
+
+.hero-stats strong{
+    font-size:20px;
+    display:block;
+}
+
+.hero-stats span{
+    color:var(--muted);
+    font-size:11px;
+}
+
+/* SERVER VISUAL */
+
+.visual{
+    min-height:460px;
+    position:relative;
+    display:grid;
+    place-items:center;
+}
+
+.globe{
+    width:330px;
+    height:330px;
+    border-radius:50%;
+    border:1px solid rgba(0,180,255,.4);
+    position:relative;
+    background:
+        radial-gradient(circle at 35% 30%,rgba(0,234,255,.3),transparent 10%),
+        radial-gradient(circle at 50% 50%,rgba(0,115,255,.16),rgba(0,20,60,.35) 65%);
+    box-shadow:
+        inset 0 0 80px rgba(0,168,255,.25),
+        0 0 100px rgba(0,119,255,.15);
+}
+
+.globe:before,
+.globe:after{
+    content:"";
+    position:absolute;
+    border:1px solid rgba(0,200,255,.25);
+    border-radius:50%;
+}
+
+.globe:before{
+    inset:40px -30px;
+}
+
+.globe:after{
+    inset:-30px 70px;
+}
+
+.server{
+    position:absolute;
+    width:250px;
+    padding:20px;
+    border-radius:22px;
+    background:linear-gradient(145deg,rgba(16,40,76,.95),rgba(5,15,35,.95));
+    border:1px solid rgba(0,183,255,.35);
+    box-shadow:0 30px 90px rgba(0,0,0,.55);
+}
+
+.server-top{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:15px;
+    font-size:12px;
+}
+
+.server-row{
+    height:48px;
+    border-radius:9px;
+    margin:8px 0;
+    background:linear-gradient(90deg,#0b203c,#102e53);
+    border:1px solid rgba(0,168,255,.2);
+    display:flex;
+    align-items:center;
+    padding:0 12px;
+    gap:8px;
+}
+
+.led{
+    width:7px;
+    height:7px;
+    background:#28ff91;
+    border-radius:50%;
+    box-shadow:0 0 10px #28ff91;
+}
+
+.line{
+    height:4px;
+    border-radius:4px;
+    flex:1;
+    background:linear-gradient(90deg,#008cff,#00eaff);
+    opacity:.5;
+}
+
+/* SECTION */
+
+section{
+    padding:95px 0;
+}
+
+.section-head{
+    text-align:center;
+    max-width:760px;
+    margin:0 auto 48px;
+}
+
+.section-head span{
+    color:#34baff;
+    font-weight:900;
+    font-size:12px;
+    letter-spacing:2px;
+}
+
+.section-head h2{
+    font-family:"Space Grotesk";
+    font-size:clamp(30px,4vw,46px);
+    margin:12px 0;
+}
+
+.section-head p{
+    color:var(--muted);
+    line-height:1.7;
+}
+
+/* SERVICES */
+
+.services{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.card{
+    position:relative;
+    overflow:hidden;
+    padding:27px;
+    min-height:260px;
+    border-radius:20px;
+    border:1px solid var(--border);
+    background:linear-gradient(145deg,rgba(12,30,59,.86),rgba(5,14,31,.8));
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(0,180,255,.55);
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+
+.card:after{
+    content:"";
+    position:absolute;
+    width:140px;
+    height:140px;
+    right:-60px;
+    top:-60px;
+    border-radius:50%;
+    background:#008cff;
+    filter:blur(70px);
+    opacity:.15;
+}
+
+.icon{
+    width:55px;
+    height:55px;
+    border-radius:15px;
+    display:grid;
+    place-items:center;
+    font-size:25px;
+    margin-bottom:24px;
+    background:linear-gradient(135deg,rgba(0,168,255,.22),rgba(0,80,255,.1));
+    border:1px solid rgba(0,168,255,.3);
+}
+
+.card h3{
+    font-size:18px;
+    margin-bottom:12px;
+}
+
+.card p{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.7;
+}
+
+.card-link{
+    color:#4fc5ff;
+    font-size:12px;
+    font-weight:800;
+    display:inline-block;
+    margin-top:18px;
+}
+
+/* HOW */
+
+.how{
+    background:linear-gradient(180deg,transparent,rgba(0,100,255,.04),transparent);
+}
+
+.steps{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:13px;
+}
+
+.step{
+    text-align:center;
+    position:relative;
+}
+
+.step-number{
+    width:62px;
+    height:62px;
+    margin:auto;
+    border-radius:18px;
+    display:grid;
+    place-items:center;
+    font-size:22px;
+    font-weight:900;
+    color:#66d5ff;
+    border:1px solid rgba(0,168,255,.35);
+    background:#07162d;
+    box-shadow:0 0 30px rgba(0,168,255,.1);
+}
+
+.step h4{
+    margin:17px 0 8px;
+}
+
+.step p{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.6;
+}
+
+/* PROFIT */
+
+.profit-box{
+    padding:55px;
+    border-radius:30px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+    border:1px solid rgba(255,199,44,.35);
+    background:
+        radial-gradient(circle at 50% 0,rgba(255,193,38,.15),transparent 38%),
+        linear-gradient(145deg,#0d1c33,#07101f);
+}
+
+.profit-box .label{
+    color:#ffd45e;
+    font-weight:900;
+    letter-spacing:2px;
+    font-size:12px;
+}
+
+.big-profit{
+    font-family:"Space Grotesk";
+    font-size:clamp(70px,12vw,140px);
+    line-height:1;
+    margin:15px 0 5px;
+    background:linear-gradient(#fff6bd,#ffb800);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.big-profit small{
+    font-size:.22em;
+}
+
+.profit-box p{
+    color:#9cadc6;
+}
+
+.notice{
+    margin:22px auto 0;
+    max-width:760px;
+    padding:14px 18px;
+    border-radius:12px;
+    color:#9fb1ca;
+    font-size:11px;
+    line-height:1.6;
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.07);
+}
+
+/* PACKAGES */
+
+.packages{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.package{
+    border-radius:19px;
+    padding:25px;
+    background:linear-gradient(160deg,#0b1b34,#06101f);
+    border:1px solid var(--border);
+}
+
+.package.featured{
+    border-color:#ffc72c;
+    transform:scale(1.025);
+    box-shadow:0 20px 60px rgba(255,190,0,.08);
+}
+
+.package .pkg{
+    color:#55caff;
+    font-weight:900;
+    font-size:12px;
+}
+
+.package.featured .pkg{
+    color:#ffc72c;
+}
+
+.price{
+    font-size:25px;
+    font-weight:900;
+    margin:12px 0 20px;
+}
+
+.package ul{
+    list-style:none;
+}
+
+.package li{
+    color:#a4b4cc;
+    font-size:12px;
+    padding:8px 0;
+    border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.package li:before{
+    content:"✓";
+    color:#2cff9a;
+    margin-right:7px;
+}
+
+.package button{
+    width:100%;
+    margin-top:20px;
+}
+
+/* CALCULATOR */
+
+.calc-wrap{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+}
+
+.calc{
+    padding:32px;
+    border-radius:24px;
+    border:1px solid var(--border);
+    background:rgba(8,22,44,.8);
+}
+
+.calc h3{
+    margin-bottom:20px;
+}
+
+.field{
+    margin-bottom:18px;
+}
+
+.field label{
+    display:block;
+    color:#8fa5c5;
+    font-size:12px;
+    margin-bottom:8px;
+}
+
+.input{
+    width:100%;
+    border:none;
+    outline:none;
+    color:white;
+    padding:16px;
+    border-radius:11px;
+    background:#07152a;
+    border:1px solid rgba(0,168,255,.22);
+}
+
+.results{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.result{
+    padding:20px;
+    border-radius:14px;
+    background:#07152a;
+    border:1px solid rgba(0,168,255,.15);
+}
+
+.result span{
+    display:block;
+    color:#8297b5;
+    font-size:11px;
+}
+
+.result strong{
+    display:block;
+    margin-top:8px;
+    font-size:20px;
+    color:#49c9ff;
+}
+
+/* BENEFITS */
+
+.benefits{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.benefit{
+    padding:25px;
+    text-align:center;
+    border-radius:18px;
+    border:1px solid var(--border);
+    background:rgba(8,22,43,.7);
+}
+
+.benefit .emoji{
+    font-size:31px;
+    margin-bottom:12px;
+}
+
+.benefit p{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:8px;
+    line-height:1.6;
+}
+
+/* FAQ */
+
+.faq{
+    max-width:850px;
+    margin:auto;
+}
+
+.faq-item{
+    margin-bottom:10px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    overflow:hidden;
+    background:rgba(7,19,39,.7);
+}
+
+.faq-q{
+    padding:18px;
+    display:flex;
+    justify-content:space-between;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.faq-a{
+    display:none;
+    padding:0 18px 18px;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.7;
+}
+
+/* CTA */
+
+.cta{
+    padding:60px;
+    border-radius:30px;
+    text-align:center;
+    background:
+        radial-gradient(circle at center,rgba(0,168,255,.2),transparent 50%),
+        linear-gradient(145deg,#0b2345,#061225);
+    border:1px solid rgba(0,168,255,.3);
+}
+
+.cta h2{
+    font-family:"Space Grotesk";
+    font-size:clamp(30px,5vw,55px);
+}
+
+.cta p{
+    color:var(--muted);
+    margin:15px auto 25px;
+}
+
+/* FOOTER */
+
+footer{
+    padding:45px 0;
+    border-top:1px solid rgba(0,168,255,.12);
+}
+
+.footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+}
+
+.footer p{
+    color:#6f829f;
+    font-size:11px;
+}
+
+/* MODAL */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:999;
+    background:rgba(0,0,0,.8);
+    backdrop-filter:blur(8px);
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal-box{
+    width:min(440px,100%);
+    padding:30px;
+    border-radius:22px;
+    background:#08172c;
+    border:1px solid rgba(0,168,255,.35);
+}
+
+.modal-box h3{
+    margin-bottom:8px;
+}
+
+.modal-box p{
+    color:var(--muted);
+    font-size:12px;
+    margin-bottom:22px;
+}
+
+.close{
+    float:right;
+    cursor:pointer;
+    color:#91a5c2;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    .menu{
+        display:none;
+    }
+
+    .hero{
+        padding:70px 0;
+    }
+
+    .hero-grid,
+    .calc-wrap{
+        grid-template-columns:1fr;
+    }
+
+    .hero-grid{
+        text-align:center;
+    }
+
+    .hero p{
+        margin:auto;
+    }
+
+    .hero-buttons,
+    .hero-stats{
+        justify-content:center;
+    }
+
+    .visual{
+        min-height:400px;
+    }
+
+    .services{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .steps{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .packages{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .benefits{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
+@media(max-width:600px){
+
+    section{
+        padding:70px 0;
+    }
+
+    .navbar .btn{
+        padding:10px 13px;
+        font-size:11px;
+    }
+
+    .hero h1{
+        letter-spacing:-2px;
+    }
+
+    .services,
+    .steps,
+    .packages,
+    .benefits{
+        grid-template-columns:1fr;
+    }
+
+    .hero-stats{
+        gap:16px;
+        flex-wrap:wrap;
+    }
+
+    .globe{
+        width:280px;
+        height:280px;
+    }
+
+    .server{
+        width:225px;
+    }
+
+    .profit-box{
+        padding:40px 18px;
+    }
+
+    .package.featured{
+        transform:none;
+    }
+
+    .results{
+        grid-template-columns:1fr;
+    }
+
+    .cta{
+        padding:45px 20px;
+    }
+
+    .footer{
+        flex-direction:column;
+        text-align:center;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+<div class="container navbar">
+
+    <a href="#" class="logo">
+        <div class="logo-icon">N</div>
+        <div>
+            <strong>NEXORA</strong>
+            <small>NXRA TECHNOLOGY</small>
+        </div>
+    </a>
+
+    <div class="menu">
+        <a href="#produk">Produk</a>
+        <a href="#cara">Cara Kerja</a>
+        <a href="#paket">Paket</a>
+        <a href="#kalkulator">Simulasi</a>
+        <a href="#faq">FAQ</a>
+    </div>
+
+    <button class="btn btn-primary" onclick="openModal()">
+        Mulai Sekarang
+    </button>
+
+</div>
+</nav>
+
+
+<!-- HERO -->
+<header class="hero">
+<div class="container hero-grid">
+
+    <div>
+
+        <div class="badge">
+            <span class="dot"></span>
+            NEXT-GENERATION DIGITAL INFRASTRUCTURE
+        </div>
+
+        <h1>
+            POWERING THE
+            <span class="gradient">NEXT DIGITAL</span>
+            ERA.
+        </h1>
+
+        <p>
+            Ekosistem teknologi modern yang mengintegrasikan
+            GPU AI Server, Cloud VPS, Dedicated Server,
+            Cloud Storage dan Render Farm dalam satu platform.
+        </p>
+
+        <div class="hero-buttons">
+
+            <button class="btn btn-primary"
+                    onclick="document.getElementById('produk').scrollIntoView()">
+                Jelajahi Produk
+            </button>
+
+            <button class="btn btn-outline"
+                    onclick="document.getElementById('kalkulator').scrollIntoView()">
+                Kalkulator Simulasi
+            </button>
+
+        </div>
+
+        <div class="hero-stats">
+
+            <div>
+                <strong>6+</strong>
+                <span>Layanan Digital</span>
+            </div>
+
+            <div>
+                <strong>24/7</strong>
+                <span>Infrastructure</span>
+            </div>
+
+            <div>
+                <strong>NXRA</strong>
+                <span>Digital Ecosystem</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="visual">
+
+        <div class="globe"></div>
+
+        <div class="server">
+
+            <div class="server-top">
+                <b>NXRA CORE SERVER</b>
+                <span style="color:#2cff9a">● ONLINE</span>
+            </div>
+
+            <div class="server-row">
+                <span class="led"></span>
+                <span class="line"></span>
+            </div>
+
+            <div class="server-row">
+                <span class="led"></span>
+                <span class="line"></span>
+            </div>
+
+            <div class="server-row">
+                <span class="led"></span>
+                <span class="line"></span>
+            </div>
+
+            <div class="server-row">
+                <span class="led"></span>
+                <span class="line"></span>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</header>
+
+
+<!-- SERVICES -->
+<section id="produk">
+
+<div class="container">
+
+<div class="section-head">
+    <span>PRODUK LAYANAN</span>
+    <h2>Ekosistem NEXORA</h2>
+    <p>
+        Infrastruktur digital untuk kebutuhan komputasi,
+        cloud, AI, penyimpanan dan produksi visual.
+    </p>
+</div>
+
+<div class="services">
+
+    <div class="card">
+        <div class="icon">🧠</div>
+        <h3>GPU AI Server</h3>
+        <p>
+            Infrastruktur GPU berperforma tinggi untuk
+            AI, machine learning, inference dan komputasi berat.
+        </p>
+        <span class="card-link">NXRA AI COMPUTE →</span>
+    </div>
+
+    <div class="card">
+        <div class="icon">☁️</div>
+        <h3>Cloud VPS</h3>
+        <p>
+            Virtual Private Server fleksibel untuk website,
+            aplikasi, sistem bisnis dan layanan digital.
+        </p>
+        <span class="card-link">NXRA CLOUD →</span>
+    </div>
+
+    <div class="card">
+        <div class="icon">🖥️</div>
+        <h3>Dedicated Server</h3>
+        <p>
+            Infrastruktur server terdedikasi untuk workload
+            yang membutuhkan resource khusus.
+        </p>
+        <span class="card-link">NXRA SERVER →</span>
+    </div>
+
+    <div class="card">
+        <div class="icon">💾</div>
+        <h3>Storage Cloud</h3>
+        <p>
+            Sistem penyimpanan cloud untuk data,
+            backup dan kebutuhan file digital.
+        </p>
+        <span class="card-link">NXRA STORAGE →</span>
+    </div>
+
+    <div class="card">
+        <div class="icon">🎬</div>
+        <h3>Render Farm</h3>
+        <p>
+            Infrastruktur komputasi untuk rendering
+            3D, animasi dan produksi visual.
+        </p>
+        <span class="card-link">NXRA RENDER →</span>
+    </div>
+
+    <div class="card">
+        <div class="icon">👑</div>
+        <h3>Program VIP</h3>
+        <p>
+            Akses layanan premium dan fitur khusus
+            sesuai kategori program yang tersedia.
+        </p>
+        <span class="card-link">NXRA VIP →</span>
+    </div>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- HOW IT WORKS -->
+<section class="how" id="cara">
+
+<div class="container">
+
+<div class="section-head">
+    <span>CARA KERJA</span>
+    <h2>Bagaimana NXRA Bekerja?</h2>
+</div>
+
+<div class="steps">
+
+    <div class="step">
+        <div class="step-number">01</div>
+        <h4>Registrasi</h4>
+        <p>Buat akun anggota NEXORA.</p>
+    </div>
+
+    <div class="step">
+        <div class="step-number">02</div>
+        <h4>Pilih Paket</h4>
+        <p>Pilih paket sesuai kebutuhan.</p>
+    </div>
+
+    <div class="step">
+        <div class="step-number">03</div>
+        <h4>Aktivasi</h4>
+        <p>Paket masuk ke status aktif.</p>
+    </div>
+
+    <div class="step">
+        <div class="step-number">04</div>
+        <h4>Operasional</h4>
+        <p>Resource dialokasikan pada ekosistem layanan.</p>
+    </div>
+
+    <div class="step">
+        <div class="step-number">05</div>
+        <h4>Dashboard</h4>
+        <p>Pantau simulasi hasil dan aktivitas akun.</p>
+    </div>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- PROFIT -->
+<section>
+
+<div class="container">
+
+<div class="profit-box">
+
+    <div class="label">SIMULASI TARGET HASIL</div>
+
+    <div class="big-profit">
+        4% <small>/ HARI</small>
+    </div>
+
+    <p>
+        Simulasi berdasarkan nilai paket aktif.
+    </p>
+
+    <div class="notice">
+        <b>Informasi penting:</b>
+        Persentase pada halaman ini merupakan simulasi/target
+        untuk menggambarkan perhitungan program dan bukan
+        jaminan keuntungan. Hasil aktual dapat berbeda sesuai
+        kinerja layanan, biaya, ketentuan kontrak dan risiko.
+    </div>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- PACKAGES -->
+<section id="paket">
+
+<div class="container">
+
+<div class="section-head">
+    <span>MEMBERSHIP</span>
+    <h2>Pilih Paket Anda</h2>
+    <p>
+        Contoh struktur paket NEXORA yang dapat disesuaikan
+        kembali melalui kode.
+    </p>
+</div>
+
+<div class="packages">
+
+    <div class="package">
+        <div class="pkg">START</div>
+        <div class="price">Rp1 Juta</div>
+
+        <ul>
+            <li>Akses Dashboard</li>
+            <li>Simulasi 4% / hari</li>
+            <li>Monitoring Paket</li>
+            <li>Support Member</li>
+        </ul>
+
+        <button class="btn btn-outline" onclick="openModal()">
+            Pilih Start
+        </button>
+    </div>
+
+
+    <div class="package">
+        <div class="pkg">SILVER</div>
+        <div class="price">Rp5 Juta</div>
+
+        <ul>
+            <li>Akses Dashboard</li>
+            <li>Simulasi 4% / hari</li>
+            <li>Monitoring Paket</li>
+            <li>Support Member</li>
+        </ul>
+
+        <button class="btn btn-outline" onclick="openModal()">
+            Pilih Silver
+        </button>
+    </div>
+
+
+    <div class="package featured">
+        <div class="pkg">GOLD</div>
+        <div class="price">Rp10 Juta</div>
+
+        <ul>
+            <li>Akses Dashboard</li>
+            <li>Simulasi 4% / hari</li>
+            <li>Monitoring Paket</li>
+            <li>Priority Support</li>
+        </ul>
+
+        <button class="btn btn-gold" onclick="openModal()">
+            Pilih Gold
+        </button>
+    </div>
+
+
+    <div class="package">
+        <div class="pkg">VIP</div>
+        <div class="price">Rp100 Juta</div>
+
+        <ul>
+            <li>VIP Dashboard</li>
+            <li>Simulasi 4% / hari</li>
+            <li>Priority Service</li>
+            <li>VIP Support</li>
+        </ul>
+
+        <button class="btn btn-outline" onclick="openModal()">
+            Pilih VIP
+        </button>
+    </div>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- CALCULATOR -->
+<section id="kalkulator">
+
+<div class="container">
+
+<div class="section-head">
+    <span>SIMULATOR</span>
+    <h2>Kalkulator 4% / Hari</h2>
+    <p>
+        Masukkan nominal untuk melihat contoh perhitungan.
+    </p>
+</div>
+
+<div class="calc-wrap">
+
+    <div class="calc">
+
+        <h3>Masukkan Nominal</h3>
+
+        <div class="field">
+            <label>Nominal Paket (Rp)</label>
+            <input
+                class="input"
+                type="number"
+                id="modal"
+                value="10000000"
+                min="0"
+                oninput="calculate()">
+        </div>
+
+        <div class="field">
+            <label>Jumlah Hari</label>
+            <input
+                class="input"
+                type="number"
+                id="days"
+                value="30"
+                min="1"
+                max="365"
+                oninput="calculate()">
+        </div>
+
+        <div class="notice" style="margin:0">
+            Kalkulator menggunakan perhitungan sederhana:
+            nominal × 4% × jumlah hari.
+        </div>
+
+    </div>
+
+
+    <div class="calc">
+
+        <h3>Hasil Simulasi</h3>
+
+        <div class="results">
+
+            <div class="result">
+                <span>Nominal</span>
+                <strong id="rModal">Rp10.000.000</strong>
+            </div>
+
+            <div class="result">
+                <span>Simulasi / Hari</span>
+                <strong id="daily">Rp400.000</strong>
+            </div>
+
+            <div class="result">
+                <span>Jumlah Hari</span>
+                <strong id="rDays">30 Hari</strong>
+            </div>
+
+            <div class="result">
+                <span>Total Simulasi</span>
+                <strong id="total">Rp12.000.000</strong>
+            </div>
+
+        </div>
+
+        <div class="notice">
+            Nilai di atas bukan estimasi keuntungan yang dijamin.
+            Ini hanya hasil matematis dari persentase simulasi 4%.
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- BENEFITS -->
+<section>
+
+<div class="container">
+
+<div class="section-head">
+    <span>WHY NEXORA</span>
+    <h2>Infrastruktur Digital Terintegrasi</h2>
+</div>
+
+<div class="benefits">
+
+    <div class="benefit">
+        <div class="emoji">🔐</div>
+        <h4>Security</h4>
+        <p>Konsep keamanan untuk melindungi sistem dan data.</p>
+    </div>
+
+    <div class="benefit">
+        <div class="emoji">⚡</div>
+        <h4>Performance</h4>
+        <p>Resource teknologi untuk kebutuhan komputasi modern.</p>
+    </div>
+
+    <div class="benefit">
+        <div class="emoji">🌎</div>
+        <h4>Global Access</h4>
+        <p>Konsep layanan digital yang dapat diakses secara online.</p>
+    </div>
+
+    <div class="benefit">
+        <div class="emoji">🎧</div>
+        <h4>Support</h4>
+        <p>Sistem dukungan anggota dan layanan pelanggan.</p>
+    </div>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- FAQ -->
+<section id="faq">
+
+<div class="container">
+
+<div class="section-head">
+    <span>FAQ</span>
+    <h2>Pertanyaan Umum</h2>
+</div>
+
+<div class="faq">
+
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+            Apa itu NEXORA?
+            <span>+</span>
+        </div>
+
+        <div class="faq-a">
+            NEXORA atau NXRA adalah konsep ekosistem teknologi
+            yang mencakup layanan GPU AI, cloud, server,
+            storage dan render infrastructure.
+        </div>
+    </div>
+
+
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+            Apakah 4% per hari dijamin?
+            <span>+</span>
+        </div>
+
+        <div class="faq-a">
+            Tidak. Angka 4% pada halaman ini merupakan
+            persentase simulasi/target perhitungan.
+            Hasil aktual tidak boleh dianggap sebagai keuntungan
+            yang pasti atau dijamin.
+        </div>
+    </div>
+
+
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+            Apa saja produk NEXORA?
+            <span>+</span>
+        </div>
+
+        <div class="faq-a">
+            GPU AI Server, Cloud VPS, Dedicated Server,
+            Storage Cloud, Render Farm dan Program VIP.
+        </div>
+    </div>
+
+
+    <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+            Bagaimana kalkulator bekerja?
+            <span>+</span>
+        </div>
+
+        <div class="faq-a">
+            Kalkulator mengalikan nominal yang dimasukkan
+            dengan 4% kemudian dikalikan jumlah hari.
+            Kalkulator hanya digunakan sebagai simulasi matematis.
+        </div>
+    </div>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- CTA -->
+<section>
+
+<div class="container">
+
+<div class="cta">
+
+    <div class="badge">
+        <span class="dot"></span>
+        NEXORA NXRA
+    </div>
+
+    <h2>
+        BUILD. CREATE.
+        <span class="gradient">SCALE.</span>
+    </h2>
+
+    <p>
+        Bangun masa depan digital bersama ekosistem teknologi NEXORA.
+    </p>
+
+    <button class="btn btn-primary" onclick="openModal()">
+        Buat Akun NEXORA
+    </button>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+
+<div class="container footer">
+
+    <div class="logo">
+        <div class="logo-icon">N</div>
+        <div>
+            <strong>NEXORA</strong>
+            <small>NXRA TECHNOLOGY</small>
+        </div>
+    </div>
+
+    <p>
+        © 2026 NEXORA NXRA. All Rights Reserved.
+    </p>
+
+</div>
+
+</footer>
+
+
+<!-- REGISTER MODAL -->
+<div class="modal" id="registerModal">
+
+<div class="modal-box">
+
+    <span class="close" onclick="closeModal()">✕</span>
+
+    <h3>Daftar NEXORA</h3>
+
+    <p>
+        Form demo registrasi anggota.
+    </p>
+
+    <div class="field">
+        <label>Nama Lengkap</label>
+        <input class="input" id="name" placeholder="Nama lengkap">
+    </div>
+
+    <div class="field">
+        <label>Email</label>
+        <input class="input" id="email" type="email" placeholder="email@example.com">
+    </div>
+
+    <div class="field">
+        <label>Password</label>
+        <input class="input" id="password" type="password" placeholder="••••••••">
+    </div>
+
+    <button
+        class="btn btn-primary"
+        style="width:100%"
+        onclick="registerDemo()">
+        Buat Akun
+    </button>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* ==========================
+   FORMAT RUPIAH
+========================== */
+
+function rupiah(number){
+
+    return new Intl.NumberFormat(
+        "id-ID",
+        {
+            style:"currency",
+            currency:"IDR",
+            maximumFractionDigits:0
+        }
+    ).format(number);
+
+}
+
+
+/* ==========================
+   CALCULATOR
+========================== */
+
+function calculate(){
+
+    let modal =
+        parseFloat(document.getElementById("modal").value) || 0;
+
+    let days =
+        parseInt(document.getElementById("days").value) || 0;
+
+    const rate = 0.04;
+
+    let daily = modal * rate;
+
+    let total = daily * days;
+
+    document.getElementById("rModal").innerText =
+        rupiah(modal);
+
+    document.getElementById("daily").innerText =
+        rupiah(daily);
+
+    document.getElementById("rDays").innerText =
+        days + " Hari";
+
+    document.getElementById("total").innerText =
+        rupiah(total);
+
+}
+
+calculate();
+
+
+/* ==========================
+   FAQ
+========================== */
+
+function toggleFaq(element){
+
+    let answer = element.nextElementSibling;
+
+    let icon = element.querySelector("span");
+
+    if(answer.style.display === "block"){
+
+        answer.style.display = "none";
+        icon.innerText = "+";
+
+    }else{
+
+        answer.style.display = "block";
+        icon.innerText = "−";
+
+    }
+
+}
+
+
+/* ==========================
+   MODAL
+========================== */
+
+function openModal(){
+
+    document.getElementById("registerModal").style.display =
+        "flex";
+
+}
+
+function closeModal(){
+
+    document.getElementById("registerModal").style.display =
+        "none";
+
+}
+
+window.onclick = function(event){
+
+    let modal =
+        document.getElementById("registerModal");
+
+    if(event.target === modal){
+        closeModal();
+    }
+
+}
+
+
+/* ==========================
+   REGISTER DEMO
+========================== */
+
+function registerDemo(){
+
+    let name =
+        document.getElementById("name").value.trim();
+
+    let email =
+        document.getElementById("email").value.trim();
+
+    let password =
+        document.getElementById("password").value.trim();
+
+    if(!name || !email || !password){
+
+        alert("Silakan lengkapi semua data.");
+
+        return;
+    }
+
+    alert(
+        "Registrasi demo berhasil, " +
+        name +
+        "!\\n\\n" +
+        "Untuk sistem akun sungguhan, website perlu dihubungkan " +
+        "ke backend/database."
+    );
+
+    closeModal();
+
+}
+
+</script>
+
+</body>
+</html>
